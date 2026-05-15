@@ -1,0 +1,10 @@
+/gestion-conges-backEnd/vendor/
+/gestion-conges-backEnd/.env
+/gestion-conges-backEnd/node_modules/
+/gestion-conges-backEnd/storage/*.key
+
+/gestion-conges-frontend/node_modules/
+/gestion-conges-frontend/dist/
+/gestion-conges-frontend/.env
+
+.DS_Store

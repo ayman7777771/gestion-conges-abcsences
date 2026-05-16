@@ -21,6 +21,7 @@ class User extends Authenticatable
     {
     return $this->belongsTo(Department::class);
     }
+
     public function manager()
     {
     return $this->belongsTo(User::class, 'manager_id');
@@ -29,6 +30,7 @@ class User extends Authenticatable
    {
     return $this->hasMany(User::class, 'manager_id');
     }
+    
    public function leaveBalances()
    {
     return $this->hasMany(LeaveBalance::class);

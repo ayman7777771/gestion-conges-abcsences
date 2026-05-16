@@ -10,6 +10,9 @@ class LeaveType extends Model
     /** @use HasFactory<\Database\Factories\LeaveTypeFactory> */
     use HasFactory;
     protected $fillable = ['name', 'default_quota', 'is_paid'];
+    protected $casts = [
+    'is_paid' => 'boolean',
+];
     public function leaveBalances()
     {
         return $this->hasMany(LeaveBalance::class);

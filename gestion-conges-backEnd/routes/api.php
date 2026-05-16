@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/leave-requests/{id}/cancel', [LeaveRequestController::class, 'cancel']);
 
     Route::get('/my/balances', [LeaveBalanceController::class, 'myBalances']);
+    Route::get('/departments/{department}', [DepartmentController::class, 'show']);
+
 
     Route::middleware('role:admin,manager')->group(function () {
         Route::get('/team/leave-requests', [LeaveRequestController::class, 'teamRequests']);
@@ -35,7 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/leave-types/{id}', [LeaveTypeController::class, 'destroy']);
 
         Route::apiResource('users', UserController::class);
-        Route::apiResource('departments', DepartmentController::class)->except(['']);
+        Route::apiResource('departments', DepartmentController::class)->except(['show']);
 
         Route::get('/users/{id}/balances', [LeaveBalanceController::class, 'userBalances']);
 

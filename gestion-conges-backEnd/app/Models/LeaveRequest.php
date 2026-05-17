@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 
 class LeaveRequest extends Model
 {
+        use HasFactory;
     protected $fillable = [
         'user_id',
         'leave_type_id',

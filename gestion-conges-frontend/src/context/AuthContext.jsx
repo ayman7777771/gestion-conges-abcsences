@@ -4,59 +4,58 @@ import api from "../api/axios.js";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [token, setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
-    const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    const login = async (email, password) => {
-        const res = await api.post("/auth/login", {
-            email,
-            password,
-        });
-
-        const accessToken = res.data.access_token;
-
-        setToken(accessToken);
-        localStorage.setItem("ACCESS_TOKEN", accessToken);
-
-        await fetchUser();
-    };
-
-    const fetchUser = async () => {
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem('auth_token');
+      if (token) {
         try {
-            const res = await api.get("/me");
-            setUser(res.data);
-        } catch {
-            logout();
+          const res = await api.get("/me");
+          setUser(res.data);
+        } catch (err) {
+          localStorage.removeItem('auth_token');
+          setUser(null);
         }
+      }
+      setLoading(false);
     };
 
-    const logout = async () => {
-        await api.post("/auth/logout");
-        setUser(null);
-        setToken(null);
-        localStorage.removeItem("ACCESS_TOKEN");
-    };
+    checkAuth();
+  }, []);
 
-    useEffect(() => {
-        if (token) {
-            fetchUser();
-        } else {
-            setLoading(false);
-        }
-    }, [token]);
+  const login = async (email, password) => {
+    const res = await api.post("/auth/login", {
+      email,
+      password,
+    });
+    localStorage.setItem('auth_token', res.data.token);
+    setUser(res.data.user);
+    return res.data.user;
+  };
 
-    return (
-        <AuthContext.Provider
-            value={{
-                user,
-                token,
-                login,
-                logout,
-                loading,
-            }}
-        >
-            {children}
-        </AuthContext.Provider>
-    );
+  const logout = async () => {
+    try {
+      await api.post("/auth/logout");
+    } catch (err) {
+      console.log("Logout error:", err.message);
+    }
+    localStorage.removeItem('auth_token');
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        loading,
+        isAuthenticated: !!user,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };

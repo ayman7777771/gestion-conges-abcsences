@@ -1,26 +1,67 @@
 :root {
   --chu-blue: #1079cf;
+  --chu-blue-hover: #0d62a8;
+  --chu-light-bg: #f4f6f9;
+  --sidebar-bg: #ffffff;
+  --navbar-bg: #ffffff;
+  
+  --text-dark: #1e293b;
+  --text-slate: #64748b;
+  --text-light: #94a3b8;
+  --border-light: #e2e8f0;
+  --danger-red: #ef4444;
+  
+  --radius-md: 10px;
+  --radius-full: 9999px;
+  --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   background-color: var(--chu-light-bg);
   color: var(--text-dark);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 .btn-pill {
   border-radius: 50px;
   padding: 0.6rem 1.5rem;
   font-weight: 600;
+  background-color: var(--chu-blue);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
   transition: all 0.3s ease;
+}
+
+.btn-pill:hover {
+  background-color: var(--chu-blue-hover);
+  transform: translateY(-1px);
 }
 
 .input-pill {
   border-radius: 50px;
   border: 1px solid #dee2e6;
   padding: 0.7rem 1.2rem;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
 .input-pill:focus {
-  box-shadow: 0 0 0 0.25rem rgba(0, 97, 175, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(16, 121, 207, 0.25);
   border-color: var(--chu-blue);
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }

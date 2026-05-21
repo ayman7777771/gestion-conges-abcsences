@@ -6,6 +6,7 @@ import Login from "./Pages/Auth/Login";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./components/Layouts/MainLayout";
 import NewLeaveRequest from "./Pages/NewLeaveRequest";
+import LeaveTypeManagement from "./Pages/Admin/Leavetypemanagement";
 import { Toaster } from "react-hot-toast";
 import UserManagement from "./Pages/Admin/Usermanagement";
 function App() {
@@ -28,7 +29,8 @@ function App() {
           >
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/new-request" element={<NewLeaveRequest />} />
-            <Route path="/users" element={<UserManagement/>}></Route>
+            <Route path="/users" element={<UserManagement/>} />
+            <Route path="/leave-types" element={<LeaveTypeManagement />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/dashboard" replace />} />

@@ -13,6 +13,7 @@ const UserManagement = () => {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [editingUser, setEditingUser] = useState(null);
   const [expandedId, setExpandedId] = useState(null);
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({
@@ -22,14 +23,6 @@ const UserManagement = () => {
   const [departments, setDepartments] = useState([]);
   const [managers, setManagers] = useState([]);
   const [balances, setBalances] = useState({});
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "employee",
-    department_id: "",
-    manager_id: "",
-  });
   const [filters, setFilters] = useState({
     name: "",
     role: "",
@@ -59,11 +52,13 @@ const UserManagement = () => {
         current_page: res.data.current_page,
         last_page: res.data.last_page,
       });
+
       const depts = [
         ...new Map(
           res.data.data.map((u) => [u.department?.id, u.department]),
         ).values(),
       ].filter(Boolean);
+
       const mngrs = res.data.data.filter((u) => u.role === "manager");
       setDepartments(depts);
       setManagers(mngrs);
@@ -84,41 +79,9 @@ const UserManagement = () => {
     }
   };
 
-  const handleSave = async () => {
-    try {
-      if (!form.name || !form.email || !form.role || !form.department_id) {
-        toast.error("Remplissez tous les champs");
-        return;
-      }
-
-      if (!editingId && !form.password) {
-        toast.error("Mot de passe requis");
-        return;
-      }
-      const data = { ...form };
-      if (editingId && !form.password) delete data.password;
-
-      const res = editingId
-        ? await api.put(`/users/${editingId}`, data)
-        : await api.post("/users", data);
-      toast.success(res.data.message);
-      resetForm();
-      fetchUsers();
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Erreur");
-    }
-  };
-
   const handleEdit = (user) => {
-    setForm({
-      name: user.name,
-      email: user.email,
-      password: "",
-      role: user.role,
-      department_id: user.department_id,
-      manager_id: user.manager_id || "",
-    });
     setEditingId(user.id);
+    setEditingUser(user);
     setShowModal(true);
   };
 
@@ -141,18 +104,18 @@ const UserManagement = () => {
     }
   };
 
-  const resetForm = () => {
-    setForm({
-      name: "",
-      email: "",
-      password: "",
-      role: "employee",
-      department_id: "",
-      manager_id: "",
-    });
+  const openCreateModal = () => {
     setEditingId(null);
-    setShowModal(false);
+    setEditingUser(null);
+    setShowModal(true);
   };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setEditingId(null);
+    setEditingUser(null);
+  };
+
   const roleOptions = [
     { value: "", label: "Tous les rôles" },
     { value: "employee", label: "Employee" },
@@ -178,70 +141,65 @@ const UserManagement = () => {
         <h1>
           <Users size={33} color="blue" />
         </h1>
-        <button
-          className="um-btn um-btn-primary"
-          onClick={() => {
-            resetForm();
-            setShowModal(true);
-          }}
-        >
+        <button className="um-btn um-btn-primary" onClick={openCreateModal}>
           <Plus size={18} /> Nouvel utilisateur
         </button>
       </div>
 
       <div className="um-table-wrapper">
+        <div className="um-filters">
+          <input
+            type="text"
+            placeholder="Rechercher par nom..."
+            value={filters.name}
+            onChange={(e) =>
+              setFilters({
+                ...filters,
+                name: e.target.value,
+              })
+            }
+          />
+
+          <Select
+            placeholder="Filtrer par rôle"
+            options={roleOptions}
+            value={roleOptions.find((r) => r.value === filters.role)}
+            onChange={(selected) =>
+              setFilters({
+                ...filters,
+                role: selected?.value || "",
+              })
+            }
+          />
+
+          <Select
+            placeholder="Filtrer par département"
+            options={[
+              { value: "", label: "Tous les départements" },
+              ...departments.map((d) => ({
+                value: d.id,
+                label: d.name,
+              })),
+            ]}
+            value={[
+              { value: "", label: "Tous les départements" },
+              ...departments.map((d) => ({
+                value: d.id,
+                label: d.name,
+              })),
+            ].find((d) => d.value === filters.department_id)}
+            onChange={(selected) =>
+              setFilters({
+                ...filters,
+                department_id: selected?.value || "",
+              })
+            }
+          />
+        </div>
         {users.length === 0 ? (
           <div className="um-empty">Aucun utilisateur</div>
         ) : (
           <div>
-            <div className="um-filters">
-              <input
-                type="text"
-                placeholder="Rechercher par nom..."
-                value={filters.name}
-                onChange={(e) =>
-                  setFilters({
-                    ...filters,
-                    name: e.target.value,
-                  })
-                }
-              />
-
-              <Select
-                placeholder="Filtrer par rôle"
-                options={roleOptions}
-                value={roleOptions.find((r) => r.value === filters.role)}
-                onChange={(selected) =>
-                  setFilters({
-                    ...filters,
-                    role: selected.value,
-                  })
-                }
-              />
-              <Select
-                placeholder="Filtrer par département"
-                options={[
-                  { value: "", label: "Tous les départements" },
-                  ...departments.map((d) => ({
-                    value: d.id,
-                    label: d.name,
-                  })),
-                ]}
-                value={[
-                  { value: "", label: "Tous les départements" },
-                  ...departments.map((d) => ({
-                    value: d.id,
-                    label: d.name,
-                  })),
-                ].find((d) => d.value === filters.department_id)}
-                onChange={(selected) =>
-                  setFilters({
-                    ...filters,
-                    department_id: selected.value,
-                  })
-                }
-              />
-            </div>
             <table className="um-table">
               <thead>
                 <tr>
@@ -320,6 +278,7 @@ const UserManagement = () => {
                           </div>
                         </td>
                       </tr>
+
                       {expandedId === user.id && (
                         <tr className="um-expand-row">
                           <td colSpan="7">
@@ -365,6 +324,7 @@ const UserManagement = () => {
           </div>
         )}
       </div>
+
       {pagination.last_page > 1 && (
         <div className="um-pagination">
           <button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>
@@ -381,13 +341,13 @@ const UserManagement = () => {
           </button>
         </div>
       )}
+
       <UserModal
         show={showModal}
-        onClose={resetForm}
-        form={form}
-        setForm={setForm}
-        onSave={handleSave}
+        onClose={closeModal}
+        onSuccess={fetchUsers}
         editingId={editingId}
+        editingUser={editingUser}
         departments={departments}
         managers={managers}
       />

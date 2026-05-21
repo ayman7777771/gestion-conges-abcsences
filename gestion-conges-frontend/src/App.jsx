@@ -5,13 +5,17 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Login from "./Pages/Auth/Login";
 import Dashboard from "./pages/Dashboard";
 import MainLayout from "./components/Layouts/MainLayout";
+import NewLeaveRequest from "./Pages/NewLeaveRequest";
+import { Toaster } from "react-hot-toast";
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        {" "}
+        <Toaster position="top-center" />
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
-          
+
           <Route path="/login" element={<Login />} />
 
           <Route
@@ -21,10 +25,8 @@ function App() {
               </ProtectedRoute>
             }
           >
-  
             <Route path="/dashboard" element={<Dashboard />} />
-            
-
+            <Route path="/new-request" element={<NewLeaveRequest />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/dashboard" replace />} />

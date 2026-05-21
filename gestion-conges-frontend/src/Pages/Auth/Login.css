@@ -147,16 +147,3 @@
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
-
-.custom-error-toast {
-    background: rgba(193, 49, 63, 0.176) !important;
-    backdrop-filter: blur(28px);
-    color: #f32222ec !important;
-    padding: 8px 8px !important;
-    border-radius: 8px !important;
-    border: 1px solid rgba(252, 217, 217, 0.2) !important;
-    font-size: 14px;
-    font-weight: 400;
-    max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}

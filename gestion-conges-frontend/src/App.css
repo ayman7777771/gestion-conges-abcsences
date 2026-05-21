@@ -4,16 +4,21 @@
   --chu-light-bg: #f4f6f9;
   --sidebar-bg: #ffffff;
   --navbar-bg: #ffffff;
-  
+  --text-muted: #7f8c8d;
   --text-dark: #1e293b;
   --text-slate: #64748b;
   --text-light: #94a3b8;
   --border-light: #e2e8f0;
   --danger-red: #ef4444;
-  
-  --radius-md: 10px;
+  --bg-light: #f8fafc;
+  --bg-white: #ffffff;
+
+  --radius-md: 11px;
   --radius-full: 9999px;
   --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --radius-lg: 16px;
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease-out;
 }
 
 * {
@@ -25,7 +30,11 @@
 body {
   background-color: var(--chu-light-bg);
   color: var(--text-dark);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 .btn-pill {
@@ -60,8 +69,25 @@ body {
 .fade-in {
   animation: fadeIn 0.3s ease-in-out;
 }
-
+.custom-error-toast {
+  background: rgba(193, 49, 63, 0.176) !important;
+  backdrop-filter: blur(28px);
+  color: #f32222ec !important;
+  padding: 8px 8px !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(252, 217, 217, 0.2) !important;
+  font-size: 14px;
+  font-weight: 400;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -50,7 +50,6 @@ const Login = () => {
       setError(serverMessage);
       toast.error(serverMessage, {
         duration: 7000,
-        position: "top-center",
         className: "custom-error-toast",
         iconTheme: {
           primary: "#fdf2f2",
@@ -74,7 +73,6 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <Toaster />
       <div className="login-card shadow-lg">
         <div className="text-center">
           <img src={logo} alt="logo" className="logo" />

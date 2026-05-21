@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Calendar, Trash2, Clock, CheckCircle, X, Palmtree } from "lucide-react";
-import api from "../../api/axios";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";import api from "../../api/axios";
 import { toast } from "react-hot-toast";
 import "../Dashboard.css";
 
@@ -45,14 +46,26 @@ export default function UserDashboard() {
     }
   };
 
-  if (loading)
-    return (
-      <div className="loading-container">
-        <div className="spinner"></div>
-        <p>Chargement de vos données...</p>
-      </div>
-    );
-
+if (loading) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', padding: '20px' }}>
+      {[...Array(4)].map((_, index) => (
+        <div key={index} style={{ padding: '20px', background: '#fff', borderRadius: '12px', border: '1px solid #eee' }}>
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+            <Skeleton circle height={40} width={40} />
+            <Skeleton height={20} width="60%" style={{ marginLeft: '15px' }} />
+          </div>
+          <Skeleton height={8} style={{ marginBottom: '20px' }} />
+          <Skeleton height={20} width="30%" />
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+            <Skeleton height={15} width="40%" />
+            <Skeleton height={15} width="40%" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
   return (
     <div className="user-dashboard-content">
       {/* Leave Balances Section */}

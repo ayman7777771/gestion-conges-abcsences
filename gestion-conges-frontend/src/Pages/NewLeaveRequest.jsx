@@ -123,7 +123,7 @@ const NewLeaveRequest = ({ onSuccess }) => {
         end_date: "",
         reason: "",
       });
-
+      await fetchInitialData();
       if (onSuccess) {
         setTimeout(() => onSuccess(), 1000);
       }

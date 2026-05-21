@@ -151,7 +151,7 @@ export default function ManagerDashboard() {
                               {req.user?.name?.charAt(0).toUpperCase() || "U"}
                             </div>
                             <span className="employee-name">
-                              {req.user?.name || "N/A"}
+                              {req.user?.name}
                             </span>
                           </div>
                         </td>

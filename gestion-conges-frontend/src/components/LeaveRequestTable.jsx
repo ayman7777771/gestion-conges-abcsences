@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './leave-request-table.css';
+import './LeaveRequestTable.css';
 
 const ROLE_COLUMNS = {
   employee: ['date', 'type', 'days', 'status', 'action'],

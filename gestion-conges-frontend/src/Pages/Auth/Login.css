@@ -4,7 +4,10 @@
 }
 
 .login-container {
-    background: linear-gradient(135deg, #e6f9f8 0%, #cfeefc 50%, #b3e5fc 100%);
+    /* background: linear-gradient(135deg, #e6f9f8 0%, #cfeefc 50%, #25b1f1 100%); */
+    background-image: url("../../assets/images/con_background.jpeg");
+    background-size: cover;
+    background-position: center;
     min-height:100vh;
     display: flex;
     align-items: center;
@@ -14,8 +17,8 @@
     flex-direction: column;
 }
 .login-card {
-  background: rgba(255, 255, 255, 0.329);
-  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.281);
+  backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(15px);
   height:73vh;
   margin: 0;

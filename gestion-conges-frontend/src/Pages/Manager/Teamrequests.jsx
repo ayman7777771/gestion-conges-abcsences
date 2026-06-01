@@ -5,6 +5,17 @@ import api from "../../api/axios";
 import LeaveRequestTable from "../../components/LeaveRequestTable";
 import "./Teamrequests.css";
 
+const showApiError = (err, fallback = "Erreur") => {
+  const errors = err.response?.data?.errors;
+
+  if (errors) {
+    Object.values(errors).flat().forEach((message) => toast.error(message));
+    return;
+  }
+
+  toast.error(err.response?.data?.message || fallback);
+};
+
 const TeamRequests = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -28,14 +39,13 @@ const TeamRequests = () => {
       if (status) params.append("status", status);
 
       const res = await api.get(`/team/leave-requests?${params}`);
-
       setRequests(res.data.data);
       setPagination({
         current_page: res.data.current_page,
         last_page: res.data.last_page,
       });
     } catch (err) {
-      toast.error("Erreur au chargement");
+      showApiError(err, "Erreur au chargement");
     } finally {
       setLoading(false);
     }
@@ -43,42 +53,27 @@ const TeamRequests = () => {
 
   const handleApprove = async (id, comment) => {
     try {
-      console.log("BEFORE REQUEST");
-      await api.patch(`/leave-requests/${id}/approve`, {
+      const res = await api.patch(`/leave-requests/${id}/approve`, {
         review_comment: comment?.trim() || null,
       });
-      console.log("SUCCESS:", res.data);
 
-      toast.success("Approuvée");
+      toast.success(res.data.message || "Demande approuvée.");
       fetchRequests();
     } catch (err) {
-      console.log("CATCH HIT");
-      console.log("FULL ERROR:", err);
-
-      console.log("RESPONSE:", err.response);
-
-      toast.error("Erreur");
-      const errors = err.response?.data?.errors;
-      if (errors) {
-        Object.values(errors)
-          .flat()
-          .forEach((msg) => toast.error(msg));
-      } else {
-        toast.error("Erreur");
-      }
+      showApiError(err, "Erreur lors de l'approbation");
     }
   };
 
   const handleReject = async (id, comment) => {
     try {
-      await api.patch(`/leave-requests/${id}/reject`, {
+      const res = await api.patch(`/leave-requests/${id}/reject`, {
         review_comment: comment?.trim(),
       });
 
-      toast.success("Refusée");
+      toast.success(res.data.message || "Demande refusée.");
       fetchRequests();
     } catch (err) {
-      toast.error(err.response?.data?.message || "Erreur");
+      showApiError(err, "Erreur lors du refus");
     }
   };
 

@@ -1,11 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./routes/ProtectedRoute";
+import ProtectedRoute from "./Routes/ProtectedRoute";
+import { NotificationProvider } from "./context/NotificationContext";
 
 import Login from "./Pages/Auth/Login";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./Pages/Dashboard";
 import MainLayout from "./components/Layouts/MainLayout";
-import UserManagement from "./Pages/Admin/Usermanagement";
+import UserManagement from "./Pages/Admin/UserManagement";
 import NewLeaveRequest from "./Pages/NewLeaveRequest";
 import LeaveTypeManagement from "./Pages/Admin/Leavetypemanagement";
 import Export from "./Pages/Admin/Export";
@@ -17,36 +18,38 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        {" "}
-        <Toaster position="top-center" />
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
+    <NotificationProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          {" "}
+          <Toaster position="top-center" toastOptions={{ duration: 7000 }}/>
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
 
-          <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login />} />
 
-          <Route
-            element={
-              <ProtectedRoute>
-                <MainLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/new-request" element={<NewLeaveRequest />} />
-            <Route path="/users" element={<UserManagement />} />
-            <Route path="/leave-types" element={<LeaveTypeManagement />} />
-            <Route path="/calendar" element={<Calendar />} />
-            <Route path="/my-requests" element={<MyRequests />} />
-            <Route path="/team-requests" element={<TeamRequests />} />
-            <Route path="/export" element={<Export />} />
-          </Route>
+            <Route
+              element={
+                <ProtectedRoute>
+                  <MainLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/new-request" element={<NewLeaveRequest />} />
+              <Route path="/users" element={<UserManagement />} />
+              <Route path="/leave-types" element={<LeaveTypeManagement />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/my-requests" element={<MyRequests />} />
+              <Route path="/team-requests" element={<TeamRequests />} />
+              <Route path="/export" element={<Export />} />
+            </Route>
 
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </NotificationProvider>
   );
 }
 

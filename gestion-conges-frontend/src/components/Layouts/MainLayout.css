@@ -13,6 +13,14 @@
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
+.sidebar-overlay {
+  display: none;
+}
+
+.mobile-sidebar-toggle {
+  display: none;
+}
+
 .main-content {
   flex: 1;
   display: flex;
@@ -24,4 +32,40 @@
   flex: 1;
   padding: 2rem;
   overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .app-container.sidebar-collapsed .app-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: block;
+    border: 0;
+    background: rgba(15, 23, 42, 0.38);
+  }
+
+  .mobile-sidebar-toggle {
+    position: fixed;
+    left: 14px;
+    bottom: 14px;
+    z-index: 70;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--chu-blue);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 22px rgba(16, 121, 207, .28);
+  }
+
+  .page-content {
+    padding: 1rem;
+  }
 }

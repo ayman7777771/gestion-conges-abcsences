@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -35,7 +34,7 @@ class ReviewLeaveRequestRequest extends FormRequest
      public function messages(): array
     {
         return [
-            'review_comment.required' => 'Le motif du refus est obligatoire.',
+            'review_comment.required' => 'Vous devez ajouter un commentaire en cas de refus.',
             'review_comment.min' => 'Le motif du refus doit contenir au moins 5 caractères.',
             'review_comment.max' => 'Le commentaire ne doit pas dépasser 500 caractères.',
         ];

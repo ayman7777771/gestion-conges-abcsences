@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Clock, Users, CheckCircle, AlertCircle, Calendar } from "lucide-react";
 import api from "../../api/axios";
-import "../Dashboard.css";
+import "./ManagerDashboard.css";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 export default function ManagerDashboard() {
@@ -174,13 +175,6 @@ export default function ManagerDashboard() {
                     ))}
                   </tbody>
                 </table>
-                {pendingRequests.length > 5 && (
-                  <div className="view-all-container">
-                    <a href="/manager/team-requests" className="view-all-link">
-                      Voir toutes les demandes →
-                    </a>
-                  </div>
-                )}
               </div>
             ) : (
               <div className="empty-state">
@@ -188,6 +182,11 @@ export default function ManagerDashboard() {
                 <p>Aucune demande en attente. Excellent travail!</p>
               </div>
             )}
+            <div className="view-all-container">
+              <Link to="/team-requests" className="view-all-link">
+                Voir toutes les demandes →
+              </Link>
+            </div>
           </div>
         </>
       )}

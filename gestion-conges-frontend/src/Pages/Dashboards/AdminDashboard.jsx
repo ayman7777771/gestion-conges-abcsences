@@ -14,7 +14,7 @@ import {
 import toast from "react-hot-toast";
 import { TrendingUp, Calendar, Percent } from "lucide-react";
 import api from "../../api/axios";
-import "../Dashboard.css";
+import "./AdminDashboard.css";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);

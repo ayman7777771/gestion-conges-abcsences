@@ -3,7 +3,7 @@ import { Calendar, Trash2, Clock, CheckCircle, X, Palmtree } from "lucide-react"
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";import api from "../../api/axios";
 import { toast } from "react-hot-toast";
-import "../Dashboard.css";
+import "./UserDashboard.css";
 
 export default function UserDashboard() {
   const [balances, setBalances] = useState([]);
@@ -37,8 +37,8 @@ export default function UserDashboard() {
       return;
 
     try {
-      await api.patch(`/leave-requests/${id}/cancel`);
-      toast.success("Demande annulée avec succès.");
+      const res = await api.patch(`/leave-requests/${id}/cancel`);
+      toast.success(res.data.message || "Demande annulée avec succès.");
       fetchUserData();
     } catch (error) {
       console.error("Erreur lors de l'annulation", error);
@@ -68,7 +68,6 @@ if (loading) {
 }
   return (
     <div className="user-dashboard-content">
-      {/* Leave Balances Section */}
       <div className="balances-section">
         <div className="dashboard-header">
           <h2 className="dashboard-title">Mes Soldes de Congés</h2>
@@ -78,7 +77,6 @@ if (loading) {
         <div className="balances-grid">
           {balances.length > 0 ? (
             balances.map((bal, index) => {
-              // Calculate percentage for progress bar
               const totalDays = bal.total || bal.remaining + (bal.used || 0);
               const percentage =
                 totalDays > 0 ? (bal.remaining / totalDays) * 100 : 0;

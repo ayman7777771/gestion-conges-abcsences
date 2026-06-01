@@ -66,11 +66,6 @@ const Export = () => {
       )}
 
       <div className="exp-card">
-        <div className="exp-info-box">
-          <AlertCircle size={20} />
-          <p>Les données exportées contiennent uniquement les demandes <strong>approuvées</strong></p>
-        </div>
-
         <div className="exp-filters">
           <div className="exp-form-group">
             <label>Date de début</label>

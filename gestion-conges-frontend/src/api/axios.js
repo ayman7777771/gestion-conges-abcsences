@@ -22,7 +22,6 @@ api.interceptors.response.use(
     (error) => {
         if (error.response?.status === 401) {
             localStorage.removeItem('auth_token');
-            window.location.href = '/login';
             return Promise.reject(new Error('Unauthorized - Please login again'));
         }
         if (error.response?.status === 403) {

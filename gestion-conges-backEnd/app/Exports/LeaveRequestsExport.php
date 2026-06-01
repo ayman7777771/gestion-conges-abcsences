@@ -19,9 +19,7 @@ class LeaveRequestsExport implements FromQuery, WithHeadings, WithMapping, WithS
 
     public function query()
     {
-        $query = LeaveRequest::with(['user.department', 'leaveType'])
-            ->where('status', 'approved');
-
+        $query = LeaveRequest::with(['user.department', 'leaveType']);
         if ($this->from) {
             $query->whereDate('start_date', '>=', $this->from);
         }

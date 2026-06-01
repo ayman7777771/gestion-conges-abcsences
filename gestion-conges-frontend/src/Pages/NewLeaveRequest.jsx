@@ -42,10 +42,6 @@ const NewLeaveRequest = ({ onSuccess }) => {
       setLeaveTypes(typesRes.data);
       setBalances(balancesRes.data);
     } catch (error) {
-      console.log("FULL ERROR:", error);
-      console.log("RESPONSE:", error.response?.data);
-      console.log("STATUS:", error.response?.status);
-
       toast.error(
         error.response?.data?.message ||
           "Erreur lors du chargement des données",
@@ -109,14 +105,14 @@ const NewLeaveRequest = ({ onSuccess }) => {
     try {
       setSubmitting(true);
 
-      await api.post("/leave-requests", {
+      const res= await api.post("/leave-requests", {
         leave_type_id: parseInt(form.leave_type_id),
         start_date: form.start_date,
         end_date: form.end_date,
         reason: form.reason || null,
       });
 
-      toast.success("Demande de congé créée avec succès !");
+      toast.success(res.data.message || "Demande de congé créée avec succès !");
       setForm({
         leave_type_id: "",
         start_date: "",
@@ -326,7 +322,6 @@ return (
           </div>
 
           <ul className="info-list">
-            <li>Les jours sont calculés automatiquement (hors week-end)</li>
             <li>Impossible de créer une demande si le solde est insuffisant</li>
             <li>Impossible de créer une demande qui chevauche un congé existant</li>
           </ul>

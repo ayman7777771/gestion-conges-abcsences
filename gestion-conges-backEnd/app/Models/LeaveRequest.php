@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use HasFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 
 class LeaveRequest extends Model
 {
-        use HasFactory;
+    use HasFactory;
     protected $fillable = [
         'user_id',
         'leave_type_id',
@@ -24,8 +24,8 @@ class LeaveRequest extends Model
     ];
 
     protected $casts = [
-        'start_date'  => 'date',
-        'end_date'    => 'date',
+        'start_date' => 'date:Y-m-d',
+        'end_date'   => 'date:Y-m-d',
         'reviewed_at' => 'datetime',
     ];
 
@@ -43,6 +43,8 @@ class LeaveRequest extends Model
     {
         return $this->belongsTo(User::class, 'reviewed_by');
     }
+
+    // controller كان طويل وحيدت منو شوية من المنطق ودرتو هنا باش ننقص من الاسطر لي فيه
     // Scopes 
 
     public function scopeForCurrentUser($query)
@@ -73,12 +75,14 @@ class LeaveRequest extends Model
         return $query->where('status', 'approved');
     }
 
-    public function scopeForMonth($query, $month, $year)
-    {
-        return $query
-            ->whereMonth('start_date', $month)
-            ->whereYear('start_date', $year);
-    }
+  public function scopeForMonth($query, $month, $year)
+  {
+    return $query->where(function ($q) use ($month, $year) {
+        $q->whereMonth('start_date', $month)->whereYear('start_date', $year)
+          ->orWhereMonth('end_date', $month)->whereYear('end_date', $year);
+    });
+  }
+    
     public function scopeWithFilters($query, Request $request)
     {
         return $query
@@ -95,8 +99,8 @@ class LeaveRequest extends Model
                 fn($q) => $q->whereDate('end_date', '<=', $request->to)
             );
     }
-    // Actions
-    public function markAsApproved(string $comment): self
+    
+    public function markAsApproved(string $comment=null): self
     {
         $this->update([
             'status'         => 'approved',
@@ -108,7 +112,7 @@ class LeaveRequest extends Model
         return $this->fresh(['user', 'leaveType']);
     }
 
-    public function markAsRejected(string $comment): self
+    public function markAsRejected(string $comment=null): self
     {
         $this->update([
             'status'         => 'rejected',

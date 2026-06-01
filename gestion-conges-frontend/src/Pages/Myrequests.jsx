@@ -5,7 +5,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { toast } from "react-hot-toast";
 import api from "../api/axios";
 import LeaveRequestTable from "../components/LeaveRequestTable";
-import "./myrequests.css";
+import "./Myrequests.css";
 
 const MyRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -48,8 +48,8 @@ const MyRequests = () => {
       return;
 
     try {
-      await api.patch(`/leave-requests/${id}/cancel`);
-      toast.success("Demande annulée");
+      const res = await api.patch(`/leave-requests/${id}/cancel`);
+      toast.success(res.data.message || "Demande annulée");
       fetchRequests();
     } catch (err) {
       toast.error(err.response?.data?.message || "Erreur lors de l'annulation");
@@ -60,7 +60,6 @@ const MyRequests = () => {
     <div className="mr-container">
       <div className="mr-header">
         <div>
-          <h1>Mes demandes de congé</h1>
           <p>Consultez et gérez vos demandes de congé</p>
         </div>
         <Calendar className="mr-header-icon" size={48} />
@@ -102,7 +101,6 @@ const MyRequests = () => {
         )}
       </div>
 
-      {/* PAGINATION */}
       {pagination.last_page > 1 && (
         <div className="mr-pagination">
           <button disabled={page === 1} onClick={() => setPage((p) => p - 1)}>

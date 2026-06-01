@@ -25,14 +25,17 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.table-container {
+.table-container,
+.table-scroll {
   overflow-x: auto;
 }
 
 .leave-table {
   width: 100%;
+  min-width: 980px;
   border-collapse: collapse;
   font-size: 14px;
+  table-layout: auto;
 }
 
 /* Table Header */
@@ -43,7 +46,7 @@
 
 .leave-table thead th {
   padding: 12px 16px;
-  text-align: right;
+  text-align: left;
   font-weight: 600;
   color: var(--text-dark);
   white-space: nowrap;
@@ -62,6 +65,9 @@
 .leave-table tbody td {
   padding: 12px 16px;
   color: var(--text-slate);
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Status Row Styling */
@@ -82,14 +88,18 @@
 }
 
 /* Badges */
-.badge {
-  display: inline-block;
+.badge,
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 4px 12px;
   border-radius: var(--radius-full);
   font-size: 12px;
   font-weight: 600;
   text-align: center;
   white-space: nowrap;
+  min-width: 96px;
 }
 
 .badge-pending {
@@ -140,8 +150,26 @@
 /* Employee Info */
 .employee-info {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 10px;
+}
+
+.employee-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 42px;
+  background: var(--chu-blue);
+  color: #fff;
+  font-weight: 800;
+  box-shadow: 0 4px 10px rgba(16, 121, 207, 0.22);
+}
+
+.employee-text {
+  min-width: 0;
 }
 
 .employee-name {
@@ -162,6 +190,7 @@
   align-items: center;
   gap: 6px;
   font-size: 13px;
+  white-space: nowrap;
 }
 
 .date-separator {
@@ -190,13 +219,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: 180px;
 }
 
 /* Action Buttons */
 .action-buttons {
   display: flex;
   gap: 6px;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
 }
 
 .btn-icon {
@@ -238,6 +269,38 @@
 
 .btn-icon.btn-info {
   color: var(--text-light);
+}
+
+.btn-action {
+  min-width: 92px;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-action.btn-primary {
+  background: var(--chu-blue);
+  color: #fff;
+  border-color: var(--chu-blue);
+}
+
+.btn-action.btn-danger {
+  background: #fff5f5;
+  color: var(--danger-red);
+}
+
+.btn-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
 }
 
 /* Small Button */
@@ -382,6 +445,20 @@
   box-shadow: 0 0 0 3px rgba(16, 121, 207, 0.1);
 }
 
+.review-label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.form-error {
+  margin: 8px 0 0;
+  color: var(--danger-red);
+  font-size: 12px;
+}
+
 .modal-footer {
   display: flex;
   gap: 10px;
@@ -479,8 +556,8 @@
 
 /* Column Width Hints */
 .col-employee {
-  width: 180px;
-  min-width: 180px;
+  width: 240px;
+  min-width: 240px;
 }
 
 .col-department {
@@ -489,13 +566,13 @@
 }
 
 .col-date {
-  width: 180px;
-  min-width: 180px;
+  width: 220px;
+  min-width: 220px;
 }
 
 .col-type {
-  width: 120px;
-  min-width: 120px;
+  width: 170px;
+  min-width: 170px;
 }
 
 .col-days {
@@ -513,8 +590,14 @@
   min-width: 140px;
 }
 
+.col-review {
+  width: 170px;
+  min-width: 170px;
+}
+
 .col-actions,
 .col-action {
-  width: 100px;
-  min-width: 100px;
+  width: 150px;
+  min-width: 150px;
+  text-align: center;
 }

@@ -17,8 +17,9 @@ class LeaveBalanceController extends Controller
         return response()->json($balances);
     }
 
-    public function userBalances(User $user)
+    public function userBalances($id)
     {
+        $user= User::findOrFail($id);
         $balances = LeaveBalance::with('leaveType')
             ->where('user_id', $user->id)
             ->where('year', now()->year)

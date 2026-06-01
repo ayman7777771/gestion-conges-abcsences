@@ -22,7 +22,7 @@ class LeaveBalance extends Model
     
     public function getRemainingAttribute(): int|string
     {
-        if (!$this->leaveType->is_paid) {
+        if (!$this->leaveType?->is_paid) {
         return 'Illimité';
     }
         $remaining = $this->quota - $this->used;

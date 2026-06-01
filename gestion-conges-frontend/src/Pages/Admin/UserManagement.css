@@ -242,10 +242,10 @@
 }
 
 .um-modal {
-  background: var(--bg-white);
-  border-radius: var(--radius-lg);
+  background: #fff;
+  border-radius: 8px;
   width: 90%;
-  max-width: 500px;
+  max-width: 560px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0,0,0,0.15);
@@ -256,12 +256,30 @@
 .um-modal-footer {
   display: flex;
   align-items: center;
-  padding: 20px 24px;
+  padding: 18px 22px;
 }
 
 .um-modal-header {
   justify-content: space-between;
   border-bottom: 1px solid var(--border-light);
+}
+
+.um-modal-header h2 {
+  margin: 0;
+  color: var(--text-dark);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.um-modal-close {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text-slate);
+  font-size: 22px;
+  line-height: 1;
 }
 
 .um-modal-footer {
@@ -271,21 +289,27 @@
 }
 
 .um-form {
-  padding: 24px;
+  padding: 22px;
   display: grid;
-  gap: 18px;
+  gap: 14px;
 }
 
 .um-form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
+}
+
+.um-form-group span {
+  color: var(--text-dark);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .um-form-group input,
 .um-form-group select {
-  padding: 12px 14px;
-  border: 2px solid var(--border-light);
+  min-height: 42px;
+  border: 1px solid var(--border-light);
   border-radius: 6px;
   font-size: 14px;
   transition: var(--transition-fast);

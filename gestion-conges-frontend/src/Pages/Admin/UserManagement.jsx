@@ -4,8 +4,8 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import toast from "react-hot-toast";
 import api from "../../api/axios";
-import UserModal from "./UserModal";
-import "./Usermanagement.css";
+import UserModal from "../../components/UserModal";
+import "./UserManagement.css";
 import Select from "react-select";
 
 const UserManagement = () => {
@@ -30,8 +30,31 @@ const UserManagement = () => {
   });
 
   useEffect(() => {
+    fetchDepartments();
+    fetchManagers();
+  }, []);
+
+  useEffect(() => {
     fetchUsers();
   }, [page, filters]);
+
+  const fetchDepartments = async () => {
+    try {
+      const res = await api.get("/departments");
+      setDepartments(res.data || []);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Erreur chargement départements");
+    }
+  };
+
+  const fetchManagers = async () => {
+    try {
+      const res = await api.get("/users?role=manager");
+      setManagers(res.data.data || []);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Erreur chargement managers");
+    }
+  };
 
   const fetchUsers = async () => {
     try {
@@ -53,15 +76,6 @@ const UserManagement = () => {
         last_page: res.data.last_page,
       });
 
-      const depts = [
-        ...new Map(
-          res.data.data.map((u) => [u.department?.id, u.department]),
-        ).values(),
-      ].filter(Boolean);
-
-      const mngrs = res.data.data.filter((u) => u.role === "manager");
-      setDepartments(depts);
-      setManagers(mngrs);
     } catch (err) {
       toast.error(err.response?.data?.message || "Erreur au chargement");
     } finally {
@@ -72,7 +86,6 @@ const UserManagement = () => {
   const fetchBalances = async (userId) => {
     try {
       const res = await api.get(`/users/${userId}/balances`);
-      console.log(res.data);
       setBalances((prev) => ({ ...prev, [userId]: res.data }));
     } catch (err) {
       toast.error(err.response?.data?.message || "Erreur chargement soldes");
@@ -88,8 +101,9 @@ const UserManagement = () => {
   const handleDelete = async (id) => {
     try {
       const res = await api.delete(`/users/${id}`);
-      toast.success(res.data.message);
+      toast.success(res.data.message || "Utilisateur supprimé.");
       fetchUsers();
+      fetchManagers();
     } catch (err) {
       toast.error(err.response?.data?.message || "Erreur");
     }
@@ -118,8 +132,9 @@ const UserManagement = () => {
 
   const roleOptions = [
     { value: "", label: "Tous les rôles" },
-    { value: "employee", label: "Employee" },
+    { value: "employee", label: "Employé" },
     { value: "manager", label: "Manager" },
+    { value: "admin", label: "Admin" },
   ];
 
   if (loading && users.length === 0) {
@@ -345,7 +360,10 @@ const UserManagement = () => {
       <UserModal
         show={showModal}
         onClose={closeModal}
-        onSuccess={fetchUsers}
+        onSuccess={() => {
+          fetchUsers();
+          fetchManagers();
+        }}
         editingId={editingId}
         editingUser={editingUser}
         departments={departments}

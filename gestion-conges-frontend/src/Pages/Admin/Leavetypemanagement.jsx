@@ -156,52 +156,94 @@ const LeaveTypeManagement = () => {
       </div>
 
       {showModal && (
-        <div className="lt-modal-overlay" onClick={resetForm}>
-          <div className="lt-modal" onClick={(e) => e.stopPropagation()}>
+  <div
+    className="modal d-block"
+    tabIndex="-1"
+    onClick={resetForm}
+    style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+  >
+    <div
+      className="modal-dialog modal-dialog-centered"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="modal-content">
 
-            <div className="lt-modal-header">
-              <h2>{editingId ? 'Modifier' : 'Créer'}</h2>
-              <button onClick={resetForm}><X size={20} /></button>
-            </div>
+        <div className="modal-header">
+          <h2 className="modal-title fs-5">
+            {editingId ? 'Modifier' : 'Créer'}
+          </h2>
 
-            <div className="lt-form">
-              <input
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                placeholder="Nom"
-              />
-
-              <input
-                type="number"
-                value={form.default_quota}
-                onChange={(e) =>
-                  setForm({ ...form, default_quota: e.target.value })
-                }
-                placeholder="Quota"
-              />
-
-              <label>
-                <input
-                  type="checkbox"
-                  checked={form.is_paid}
-                  onChange={(e) =>
-                    setForm({ ...form, is_paid: e.target.checked })
-                  }
-                />
-                Rémunéré
-              </label>
-            </div>
-
-            <div className="lt-modal-footer">
-              <button onClick={resetForm}>Annuler</button>
-              <button onClick={handleSave}>
-                {editingId ? 'Update' : 'Create'}
-              </button>
-            </div>
-
-          </div>
+          <button
+            type="button"
+            className="btn-close"
+            onClick={resetForm}
+          ></button>
         </div>
-      )}
+
+        <div className="modal-body d-flex flex-column gap-3">
+
+          <input
+            className="form-control"
+            value={form.name}
+            onChange={(e) =>
+              setForm({ ...form, name: e.target.value })
+            }
+            placeholder="Nom"
+          />
+
+          <input
+            className="form-control"
+            type="number"
+            min={0}
+            value={form.default_quota}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                default_quota: e.target.value,
+              })
+            }
+            placeholder="Quota"
+          />
+          <label className="form-check d-flex align-items-center gap-2">
+            <input
+              className="form-check-input"
+              style={{  backgroundColor: form.is_paid ? '#14a763' : 'transparent'}}
+              type="checkbox"
+              checked={form.is_paid}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  is_paid: e.target.checked,
+                })
+              }
+            />
+            <span className="form-check-label">
+              Rémunéré
+            </span>
+          </label>
+
+        </div>
+
+        <div className="modal-footer">
+          <button
+            className="btn btn-secondary"
+            onClick={resetForm}
+          >
+            Annuler
+          </button>
+
+          <button
+            className="btn btn-primary"
+            onClick={handleSave}
+          >
+            {editingId ? 'Update' : 'Create'}
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };

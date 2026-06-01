@@ -5,16 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     public function login(LoginRequest $request)
     {
         if (!Auth::attempt($request->validated())) {
-            throw ValidationException::withMessages([
-                'email' => ['Email ou mot de passe incorrect']
-            ]);
+            return response()->json([
+                'message' => 'Email ou mot de passe incorrect'
+            ], 401);
         }
 
         $user = Auth::user();
@@ -22,8 +21,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Connexion réussie',
-            'access_token' => $token,
-            'token_type' => 'Bearer',
+            'token' => $token,
             'user' => $user
         ]);
     }

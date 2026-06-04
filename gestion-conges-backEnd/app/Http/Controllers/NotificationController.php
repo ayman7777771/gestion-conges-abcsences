@@ -9,10 +9,6 @@ class NotificationController extends Controller
 {
     public function __construct(private NotificationService $notificationService) {}
 
-    /**
-     * الحصول على إشعارات المستخدم الحالي
-     * GET /api/notifications
-     */
     public function index()
     {
         $notifications = $this->notificationService->getUserNotifications(20);
@@ -29,62 +25,46 @@ class NotificationController extends Controller
         ]);
     }
 
-    /**
-     * تحديد إشعار كمقروء
-     * PATCH /api/notifications/{id}/read
-     */
     public function markAsRead($id)
     {
         $notification = $this->notificationService->markAsRead($id);
 
         if (!$notification) {
             return response()->json([
-                'message' => 'الإشعار غير موجود'
+                'message' => 'Notification introuvable'
             ], 404);
         }
 
         return response()->json([
-            'message' => 'تم تحديث الإشعار',
+            'message' => 'Notification mise à jour avec succès',
             'notification' => $notification
         ]);
     }
 
-    /**
-     * تحديد جميع الإشعارات كمقروءة
-     * PATCH /api/notifications/mark-all-read
-     */
     public function markAllAsRead()
     {
         $this->notificationService->markAllAsRead();
 
         return response()->json([
-            'message' => 'تم تحديث جميع الإشعارات'
+            'message' => 'Toutes les notifications ont été mises à jour'
         ]);
     }
 
-    /**
-     * حذف إشعار
-     * DELETE /api/notifications/{id}
-     */
     public function delete($id)
     {
         $deleted = $this->notificationService->delete($id);
 
         if (!$deleted) {
             return response()->json([
-                'message' => 'الإشعار غير موجود'
+                'message' => 'Notification introuvable'
             ], 404);
         }
 
         return response()->json([
-            'message' => 'تم حذف الإشعار بنجاح'
+            'message' => 'Notification supprimée avec succès'
         ]);
     }
 
-    /**
-     * الحصول على عدد الإشعارات غير المقروءة فقط
-     * GET /api/notifications/unread-count
-     */
     public function unreadCount()
     {
         return response()->json([

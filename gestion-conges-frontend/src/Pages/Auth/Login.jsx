@@ -31,7 +31,7 @@ const Login = () => {
 
         try {
             await login(email, password, rememberMe); 
-            toast.success('Connexion réussie !');
+            // toast.success('Connexion réussie !');
             navigate("/dashboard");
         } catch (err) {
             const serverMessage = err.response?.data?.errors[0] || "Erreur de connexion au serveur";
@@ -109,7 +109,7 @@ const Login = () => {
                         <a href="#" className="forgot-password">Mot de passe oublié ?</a>
                     </div>
 
-                    <div className="form-check mb-4">
+                    {/* <div className="form-check mb-4">
                         <input 
                             type="checkbox" 
                             className="form-check-input" 
@@ -118,7 +118,7 @@ const Login = () => {
                             onChange={(e) => setRememberMe(e.target.checked)}
                         />
                         <label className="form-check-label label-remember" htmlFor="rem">Se souvenir de moi</label>
-                    </div>
+                    </div> */}
 
                     <button 
                         type="submit"

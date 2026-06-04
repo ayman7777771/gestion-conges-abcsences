@@ -34,7 +34,7 @@ class UserController extends Controller
             $query->where('department_id', $request->department_id);
         }
 
-        return response()->json($query->paginate(20));
+        return response()->json($query->paginate(15));
     }
 
     public function show(User $user)

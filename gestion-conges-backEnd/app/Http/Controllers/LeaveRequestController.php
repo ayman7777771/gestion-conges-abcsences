@@ -42,6 +42,7 @@ class LeaveRequestController extends Controller
 
         $validated = $request->validated();
         $daysCount = $this->leaveRequestAction->prepareCreate(auth()->id(), $validated);
+        $isApprovedRole = in_array(auth()->user()->role, ['admin', 'manager']);
 
         $leaveRequest = LeaveRequest::create([
             'user_id' => auth()->id(),
@@ -50,14 +51,14 @@ class LeaveRequestController extends Controller
             'end_date' => $validated['end_date'],
             'days_count' => $daysCount,
             'reason' => $validated['reason'] ?? null,
-            'status' => auth()->user()->role === 'admin' ? 'approved' : 'pending',
+            'status' => $isApprovedRole ? 'approved' : 'pending',
         ]);
 
-        if (auth()->user()->role === 'admin') {
+        if ($isApprovedRole) {
             $this->balanceService->deduct(auth()->id(), $validated['leave_type_id'], $daysCount);
         }
 
-        $notification = auth()->user()->role === 'admin'
+        $notification = $isApprovedRole
             ? null
             : $this->notificationService->notifyManagerOnNewRequest($leaveRequest->load('user.manager'));
 
